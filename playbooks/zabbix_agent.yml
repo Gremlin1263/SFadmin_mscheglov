@@ -1,0 +1,49 @@
+---
+   - hosts: bd
+     become: yes
+     tasks:
+      - name: Install on Ubuntu
+        apt:
+          name: zabbix-agent
+          state: latest
+      - name: Change Zabbix_Agent Configuration_1
+        lineinfile:
+          dest: /etc/zabbix/zabbix_agentd.conf
+          regexp: "Server=127.0.0.1"
+          insertbefore: "### Option: ListenPort"
+          line: "Server=10.129.0.25"
+      - name: Change conf zabbix_server _3
+        lineinfile:
+          dest: /etc/zabbix/zabbix_agentd.conf
+          regexp: "ServerActive=127.0.0.1"
+          insertbefore: "### Option: Hostname"
+          line: "ServerActive=10.129.0.25"
+      - name: Start Zabbix
+        service:
+          name: zabbix-agent
+          state: started
+          enabled: yes
+   - hosts: web
+     become: yes
+     tasks:
+      - name:  install Zabbix_Agent
+        yum:
+          name: zabbix-agent
+          state: latest
+      - name: Change Zabbix_Agent Configuration_1
+        lineinfile:
+          dest: /etc/zabbix/zabbix_agentd.conf
+          regexp: "Server=127.0.0.1"
+          insertbefore: "### Option: ListenPort"
+          line: "Server=10.129.0.25"
+      - name: Change conf zabbix_server _3
+        lineinfile:
+          dest: /etc/zabbix/zabbix_agentd.conf
+          regexp: "ServerActive=127.0.0.1"
+          insertbefore: "### Option: Hostname"
+          line: "ServerActive=10.129.0.25"
+      - name: Start Zabbix
+        service:
+          name: zabbix-agent
+          state: started
+          enabled: yes
